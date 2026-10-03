@@ -1,0 +1,8 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="finput_foutput/finput_foutput.vcxproj" Id="98d6cd45-529f-4594-98f9-7069bc0d4c66" />
+  <Project Path="input_output/input_output.vcxproj" Id="4a1e5a60-47a4-4269-aab0-259a0236073f" />
+</Solution>
