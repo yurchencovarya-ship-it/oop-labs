@@ -98,6 +98,4 @@ public:
     void deleteFromFile(const string& filename, int empId);
     void editInFile(const string& filename, int empId);
     void viewFileRaw(const string& filename) const;
-    void searchInFile(const string& filename, const string& keyword) const;
 };
-#pragma once

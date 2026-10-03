@@ -1,5 +1,4 @@
 #include "Airline.h"
-
 // Перегрузка операторов вывода и ввода для Employee
 ostream& operator<<(ostream& os, const Employee& emp) {
     emp.putData();
@@ -23,24 +22,25 @@ Employee::Employee(const Employee& other) {
     id = other.id;
 }
 Employee::~Employee() {}
+
 void Employee::getData() {
     cin.ignore(1000, '\n');
     cout << "Введите ФИО сотрудника: ";
-    getline(cin, name);
-    cout << "Введите табельный номер: " << endl;
-    cin >> id;
+    getline(cin, name);   
+    cout << "Введите ID: ";
+    cin >> id;             
 }
 void Employee::putData() const {
     cout << "ФИО: " << name << endl;
-    cout << "Табельный номер: " << id << endl;
+    cout << "ID: " << id << endl;
 }
 void Employee::saveData(ofstream& ouf) const {
     ouf << name << endl << id << endl;
 }
 void Employee::loadData(ifstream& inf) {
-    inf.ignore(1000, '\n');
     getline(inf, name);
     inf >> id;
+    inf.ignore(1000, '\n');
 }
 // ПИЛОТ 
 Pilot::Pilot() : Employee() {
@@ -55,7 +55,7 @@ Pilot::Pilot(const Pilot& other) : Employee(other) {
 Pilot::~Pilot() {}
 void Pilot::getData() {
     Employee::getData();
-    cout << "Введите общий налет часов: " << endl;
+    cout << "Введите общий налет часов: ";
     cin >> flightHours;
 }
 void Pilot::putData() const {
@@ -70,6 +70,7 @@ void Pilot::saveData(ofstream& ouf) const {
 void Pilot::loadData(ifstream& inf) {
     Employee::loadData(inf);
     inf >> flightHours;
+    inf.ignore(1000, '\n');
 }
 // СТЮАРДЕССА
 FlightAttendant::FlightAttendant() : Employee() {
@@ -114,12 +115,12 @@ Engineer::~Engineer() {}
 void Engineer::getData() {
     Employee::getData();
     cin.ignore(1000, '\n');
-    cout << "Введите специализацию (например, Авионика): ";
+    cout << "Введите специализацию (например, электронника): ";
     getline(cin, specialization);
 }
 void Engineer::putData() const {
     Employee::putData();
-    cout << "\nДолжность: Инженер" << endl;
+    cout << "Должность: Инженер" << endl;
     cout << "Специализация: " << specialization << endl;
 }
 void Engineer::saveData(ofstream& ouf) const {
@@ -128,7 +129,6 @@ void Engineer::saveData(ofstream& ouf) const {
 }
 void Engineer::loadData(ifstream& inf) {
     Employee::loadData(inf);
-    inf.ignore(1000, '\n');
     getline(inf, specialization);
 }
 // ПОЛЕТ (ЭКИПАЖ)
@@ -205,6 +205,7 @@ void Flight::createFlight() {
             cin.ignore(1000, '\n');
             continue;
         }
+        cin.ignore(1000, '\n');
         Employee* emp = nullptr;
         if (typeChoice == 1) emp = new Pilot();
         else if (typeChoice == 2) emp = new FlightAttendant();
@@ -233,34 +234,27 @@ void Flight::showFlightInfo() const {
     cout << "--------------------------------------------------" << endl;
 }
 void Flight::saveToFile(const string& filename) const {
-    ofstream ouf;
-    ouf.open(filename, ios::out);
-    if (!ouf.is_open() || ouf.fail()) {
-        cerr << "Ошибка открытия файла для записи!" << endl;
+    ofstream ouf(filename, ios::out);
+    if (!ouf.is_open()) {
+        cerr << "Ошибка открытия файла для записи: " << filename << endl;
         return;
     }
-    if (ouf.good()) {
-        ouf << flightNumber << endl;
-        ouf << destination << endl;
-        ouf << crewSize << endl;
-        for (int i = 0; i < crewSize; ++i) {
-            if (crew[i] != nullptr) {
-                ouf << crew[i]->getTypeName() << endl;
-                crew[i]->saveData(ouf);
-            }
+
+    ouf << flightNumber << endl;
+    ouf << destination << endl;
+    ouf << crewSize << endl;
+    for (int i = 0; i < crewSize; ++i) {
+        if (crew[i] != nullptr) {
+            ouf << crew[i]->getTypeName() << endl;
+            crew[i]->saveData(ouf);
         }
-        cout << "Данные успешно сохранены в файл: " << filename << endl;
-    }
-    if (ouf.bad()) {
-        cerr << "Критическая ошибка записи в файл (bad)!" << endl;
     }
     ouf.close();
 }
 void Flight::readFromFile(const string& filename) {
-    ifstream inf;
-    inf.open(filename, ios::in);
+    ifstream inf(filename, ios::in);
     if (!inf.is_open()) {
-        cerr << "Ошибка открытия файла для чтения!" << endl;
+        cerr << "Ошибка открытия файла для чтения: " << filename << endl;
         return;
     }
     if (inf.peek() == EOF) {
@@ -273,11 +267,11 @@ void Flight::readFromFile(const string& filename) {
         crew[i] = nullptr;
     }
     crewSize = 0;
-    inf.ignore(1000, '\n');
     getline(inf, flightNumber);
     getline(inf, destination);
     int loadedSize = 0;
     inf >> loadedSize;
+    inf.ignore(1000, '\n');
     for (int i = 0; i < loadedSize; ++i) {
         if (inf.eof()) {
             cout << "Предупреждение: достигнут конец файла раньше времени!" << endl;
@@ -285,6 +279,7 @@ void Flight::readFromFile(const string& filename) {
         }
         string typeStr;
         inf >> typeStr;
+        inf.ignore(1000, '\n');
         Employee* emp = nullptr;
         if (typeStr == "Pilot") {
             emp = new Pilot();
@@ -304,17 +299,12 @@ void Flight::readFromFile(const string& filename) {
             crew[crewSize++] = emp;
         }
     }
-    cout << "Данные успешно загружены из файла: " << filename << endl;
     inf.close();
 }
 void Flight::appendToFile(const string& filename) const {
-    ofstream ouf;
-    ouf.open(filename, ios::app);
-    if (!ouf.is_open()) {
-        cerr << "Ошибка открытия файла для добавления!" << endl;
-        return;
-    }
-    cout << "Добавление дополнительного сотрудника в файл:" << endl;
+    Flight tempFlight = *this; 
+    tempFlight.readFromFile(filename); 
+    cout << "Добавление дополнительного сотрудника:" << endl;
     cout << "1 - Пилот\n2 - Бортпроводник\n3 - Инженер\nВыбор: ";
     int tChoice;
     cin >> tChoice;
@@ -324,60 +314,35 @@ void Flight::appendToFile(const string& filename) const {
     else if (tChoice == 3) emp = new Engineer();
     else {
         cout << "Неверный выбор!" << endl;
-        ouf.close();
         return;
     }
     cin >> *emp;
-    ouf << emp->getTypeName() << endl;
-    emp->saveData(ouf);
-    delete emp;
-    cout << "Данные успешно добавлены в файл!" << endl;
-    ouf.close();
+    if (tempFlight.crewSize < 100) { 
+        tempFlight.crew[tempFlight.crewSize++] = emp;
+        tempFlight.saveToFile(filename);
+        cout << "Данные успешно добавлены в файл!" << endl;
+    }
+    else {
+        cout << "Превышен лимит экипажа!" << endl;
+        delete emp;
+    }
 }
-
 void Flight::viewFileRaw(const string& filename) const {
-    ifstream inf;
-    inf.open(filename);
+    ifstream inf(filename);
     if (!inf.is_open()) {
-        cerr << "Не удалось открыть файл для просмотра!" << endl;
+        cerr << "Не удалось открыть файл для просмотра: " << filename << endl;
         return;
     }
     cout << "--- СОДЕРЖИМОЕ ФАЙЛА (" << filename << ") ---" << endl;
     string line;
     while (getline(inf, line)) {
         cout << line << endl;
-        streampos pos = inf.tellg();
-        (void)pos;
     }
     cout << "-----------------------------------------\n" << endl;
     inf.close();
 }
-
-void Flight::searchInFile(const string& filename, const string& keyword) const {
-    ifstream inf;
-    inf.open(filename);
-    if (!inf.is_open()) {
-        cerr << "Ошибка открытия файла для поиска!" << endl;
-        return;
-    }
-    cout << "--- РЕЗУЛЬТАТЫ ПОИСКА КЛЮЧЕВОГО СЛОВА: " << keyword << endl;
-    string line;
-    bool found = false;
-    while (getline(inf, line)) {
-        if (line.find(keyword) != string::npos) {
-            cout << "Найдено совпадение в строке: " << line << endl;
-            found = true;
-        }
-    }
-    if (!found) {
-        cout << "По вашему запросу ничего не найдено." << endl;
-    }
-    cout << "---------------------------------------------" << endl;
-    inf.close();
-}
-
 void Flight::deleteFromFile(const string& filename, int empId) {
-    readFromFile(filename);
+    readFromFile(filename); 
     bool deleted = false;
     for (int i = 0; i < crewSize; ++i) {
         if (crew[i]->getId() == empId) {
@@ -391,12 +356,6 @@ void Flight::deleteFromFile(const string& filename, int empId) {
         }
     }
     if (deleted) {
-        ofstream ouf;
-        ouf.open(filename, ios::trunc);
-        if (ouf.is_open()) {
-            ouf.seekp(0);
-            ouf.close();
-        }
         saveToFile(filename);
         cout << "Сотрудник с ID " << empId << " удален из файла." << endl;
     }
@@ -404,7 +363,6 @@ void Flight::deleteFromFile(const string& filename, int empId) {
         cout << "Сотрудник с ID " << empId << " не найден в экипаже." << endl;
     }
 }
-
 void Flight::editInFile(const string& filename, int empId) {
     readFromFile(filename);
     bool edited = false;

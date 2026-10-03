@@ -3,6 +3,15 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
+  <Project Path="E:/1 год 2 семестр/ООПИП/1laba/1laba/1laba.vcxproj" Id="1f43cf7e-75fe-44a7-8cc5-3a1e5796b6bb" />
+  <Project Path="E:/1 год 2 семестр/ООПИП/1laba/2laba/2laba.vcxproj" Id="671c036e-2a9f-4347-95c3-b9c4c8f4ccd7" />
+  <Project Path="E:/1 год 2 семестр/ООПИП/1laba/3laba/3laba.vcxproj" Id="3fae0d16-c296-4a67-8728-b367e9f53585" />
+  <Project Path="E:/1 год 2 семестр/ООПИП/1laba/4laba/4laba.vcxproj" Id="9fdd1a0c-45ce-4239-a5b2-3a62ce71d154" />
+  <Project Path="E:/1 год 2 семестр/ООПИП/1laba/6laba/6laba.vcxproj" Id="2fcf8dbe-f905-4451-8590-95743b32a493" />
+  <Project Path="E:/1 год 2 семестр/ООПИП/1laba/7laba/7laba.vcxproj" Id="acd82353-c670-4b1b-a974-209aee612166" />
+  <Project Path="E:/1 год 2 семестр/ООПИП/1laba/9laba/9laba.vcxproj" Id="1f8762d4-db31-496f-8c1a-a3f5e886daa9" />
+  <Project Path="E:/1 год 2 семестр/ООПИП/5laba/5laba/5laba.vcxproj" Id="3ddf8ad5-3630-45a2-8e55-30fc55a84012" />
+  <Project Path="E:/1 год 2 семестр/ООПИП/8laba/8laba/8laba.vcxproj" Id="28309461-ead3-4ea7-802c-5d193e4c4c6a" />
   <Project Path="finput_foutput/finput_foutput.vcxproj" Id="98d6cd45-529f-4594-98f9-7069bc0d4c66" />
   <Project Path="input_output/input_output.vcxproj" Id="4a1e5a60-47a4-4269-aab0-259a0236073f" />
 </Solution>
