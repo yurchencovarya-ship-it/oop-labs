@@ -14,4 +14,6 @@
   <Project Path="E:/1 год 2 семестр/ООПИП/8laba/8laba/8laba.vcxproj" Id="28309461-ead3-4ea7-802c-5d193e4c4c6a" />
   <Project Path="finput_foutput/finput_foutput.vcxproj" Id="98d6cd45-529f-4594-98f9-7069bc0d4c66" />
   <Project Path="input_output/input_output.vcxproj" Id="4a1e5a60-47a4-4269-aab0-259a0236073f" />
+  <Project Path="STLassociativeContainers/STLassociativeContainers.vcxproj" Id="745f1c4b-3e23-4808-bd06-851ceb24cfb3" />
+  <Project Path="STLsequenceContainers/STLsequenceContainers.vcxproj" Id="2c9e1097-fb82-443a-84a9-a58a6cd31055" />
 </Solution>
